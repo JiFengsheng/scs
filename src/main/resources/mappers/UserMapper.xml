@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scs.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.scs.pojo.User">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="rfid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="role" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="disabled" javaType="java.lang.Boolean" jdbcType="BIT" />
+    </constructor>
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="password" property="password"/>
+    <result column="rfid" property="rfid"/>
+    <result column="role" property="rfid"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="disabled" property="disabled"/>
+  </resultMap>
+
+  <resultMap id="ResultMap" type="com.scs.pojo.User">
+
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="password" property="password"/>
+    <result column="rfid" property="rfid"/>
+    <result column="role" property="role"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="disabled" property="disabled"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.scs.pojo.User">
+    insert into user (id, name, password,
+    rfid, role, create_time,
+    update_time, disabled)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    #{rfid,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
+    now(), #{disabled,jdbcType=BIT})
+    <!--select传过来的数据立马传给id -->
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      select @@identity
+    </selectKey>
+
+
+  </insert>
+
+
+
+
+  <insert id="insertSelective" parameterType="com.scs.pojo.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="rfid != null">
+        rfid,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="disabled != null">
+        disabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="rfid != null">
+        #{rfid,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        now()
+      </if>
+      <if test="updateTime != null">
+        now()
+      </if>
+      <if test="disabled != null">
+        #{disabled,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAllUsers" resultMap="ResultMap">
+    select * from user
+  </select>
+
+  <select id="countUsers"  resultType="java.lang.Long">
+    select count(*) from user
+
+  </select>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from user WHERE id=#{xxx}
+  </select>
+
+  <select id="selectByExample" parameterType="com.scs.pojo.User"
+          resultMap="ResultMap">
+    select * from user
+    <trim prefix="where"  suffixOverrides="and">
+      <if test="id != null">
+        id=#{id} and
+      </if>
+
+      <if test="name != null">
+        name like concat('%',#{name},'%')and
+      </if>
+      <if test="password != null">
+        password=#{password}and
+      </if>
+      <if test="rfid != null">
+        rfid=#{rfid} and
+      </if>
+      <if test="role != null">
+        role=#{role} and
+      </if>
+      <if test="createTime != null">
+        create_time=#{createTime} and
+      </if>
+
+      <if test="updateTime != null">
+        update_time=#{updateTime} and
+      </if>
+      <if test="disabled != null">
+        disabled = #{disabled,jdbcType=BIT} and
+
+      </if>
+
+    </trim>
+  </select>
+  <!--SELECT * from `user` where disabled = 0;-->
+
+  <delete id="deleteById" >
+    <!-- 这里的#{}只是占位符，内容随意填。 -->
+    delete from user where id=#{xxx}
+  </delete>
+
+
+
+  <update id="updateByExampleSelective" parameterType="com.scs.pojo.User">
+    update user
+    <set>
+      <trim suffixOverrides=",">
+
+        <if test="name != null">
+          name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="password != null">
+          password = #{password,jdbcType=VARCHAR},
+        </if>
+        <if test="rfid != null">
+          rfid = #{rfid,jdbcType=VARCHAR},
+        </if>
+        <if test="role != null">
+          role = #{role,jdbcType=INTEGER},
+        </if>
+        <if test="createTime != null">
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+
+        <if test="disabled != null">
+          disabled = #{disabled,jdbcType=BIT},
+        </if>
+          update_time = now(),
+      </trim>
+    </set>
+    WHERE id=#{id}
+
+
+  </update>
+
+</mapper>
