@@ -35,7 +35,7 @@
     <result column="academy" property="academy"/>
     <result column="class_id" property="classId"/>
     <result column="pic" property="pic"/>
-    <result column="create_time" property="creatTime"/>
+    <result column="create_time" property="createTime"/>
     <result column="update_time" property="updateTime"/>
     <result column="disabled" property="disabled"/>
   </resultMap>
@@ -162,84 +162,143 @@
 
 
 
-
-
-
-  <delete id="deleteByExample">
-    delete from student
+  <delete id="deleteById">
+    delete from student WHERE id=#{xxx}
 
   </delete>
+
+  <select id="selectAllStudents" resultMap="ResultMap">
+    select * FROM student
+  </select>
 
   <sql id="Base_Column_List">
     id, user_id, student_id, name, sex, birth, Admission_Date, native_place, home, email_code, 
     academy, class_id, pic, create_time, update_time, disabled
   </sql>
-  <select id="selectByExample" parameterType="com.scs.pojo.Student" resultMap="ResultMap">
+  <select id="selectByExample" parameterType="com.scs.pojo.Student"
+          resultMap="ResultMap">
     select
     <include refid="Base_Column_List" />
     from student
+    <trim prefix="where"  suffixOverrides="and">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER} and
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER} and
+      </if>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=INTEGER} and
+      </if>
+      <if test="name != null">
+        name like concat('%',#{name},'%')and
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR} and
+      </if>
+      <if test="birth != null">
+        birth = #{birth,jdbcType=TIMESTAMP} and
+      </if>
+      <if test="admissionDate != null">
+        Admission_Date = #{admissionDate,jdbcType=TIMESTAMP} and
+      </if>
+      <if test="nativePlace != null">
+        native_place = #{nativePlace,jdbcType=VARCHAR} and
+      </if>
+      <if test="home != null">
+        home = #{home,jdbcType=VARCHAR} and
+      </if>
+      <if test="emailCode != null">
+        email_code = #{emailCode,jdbcType=VARCHAR} and
+      </if>
+      <if test="academy != null">
+        academy = #{academy,jdbcType=VARCHAR} and
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER} and
+      </if>
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR} and
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP} and
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP} and
+      </if>
+      <if test="disabled != null">
+        disabled = #{disabled,jdbcType=BIT} and
+      </if>
+    </trim>
 
   </select>
 
 
-
-  <select id="countByExample" parameterType="com.scs.pojo.Student" resultType="java.lang.Long">
+  <select id="countStudent" resultType="java.lang.Long">
     select count(*) from student
-
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+
+  <select id="selectById" resultMap="ResultMap">
+    SELECT * FROM student WHERE id=#{xxx}
+  </select>
+
+
+
+  <update id="updateByExampleSelective" parameterType="com.scs.pojo.Student">
     update student
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.studentId != null">
-        student_id = #{record.studentId,jdbcType=INTEGER},
-      </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sex != null">
-        sex = #{record.sex,jdbcType=VARCHAR},
-      </if>
-      <if test="record.birth != null">
-        birth = #{record.birth,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.admissionDate != null">
-        Admission_Date = #{record.admissionDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.nativePlace != null">
-        native_place = #{record.nativePlace,jdbcType=VARCHAR},
-      </if>
-      <if test="record.home != null">
-        home = #{record.home,jdbcType=VARCHAR},
-      </if>
-      <if test="record.emailCode != null">
-        email_code = #{record.emailCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.academy != null">
-        academy = #{record.academy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.classId != null">
-        class_id = #{record.classId,jdbcType=INTEGER},
-      </if>
-      <if test="record.pic != null">
-        pic = #{record.pic,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.disabled != null">
-        disabled = #{record.disabled,jdbcType=BIT},
-      </if>
-    </set>
+      <trim suffixOverrides=",">
+        <if test="id != null">
+          id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="userId != null">
+          user_id = #{userId,jdbcType=INTEGER},
+        </if>
+        <if test="studentId != null">
+          student_id = #{studentId,jdbcType=INTEGER},
+        </if>
+        <if test="name != null">
+          name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="sex != null">
+          sex = #{sex,jdbcType=VARCHAR},
+        </if>
+        <if test="birth != null">
+          birth = #{birth,jdbcType=TIMESTAMP},
+        </if>
+        <if test="admissionDate != null">
+          Admission_Date = #{admissionDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="nativePlace != null">
+          native_place = #{nativePlace,jdbcType=VARCHAR},
+        </if>
+        <if test="home != null">
+          home = #{home,jdbcType=VARCHAR},
+        </if>
+        <if test="emailCode != null">
+          email_code = #{emailCode,jdbcType=VARCHAR},
+        </if>
+        <if test="academy != null">
+          academy = #{academy,jdbcType=VARCHAR},
+        </if>
+        <if test="classId != null">
+          class_id = #{classId,jdbcType=INTEGER},
+        </if>
+        <if test="pic != null">
+          pic = #{pic,jdbcType=VARCHAR},
+        </if>
+        <if test="createTime != null">
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+        </if>
 
+        <if test="disabled != null">
+          disabled = #{disabled,jdbcType=BIT},
+        </if>
+        update_time = now(),
+      </trim>
+
+    </set>
+    WHERE id=#{id}
 
   </update>
 

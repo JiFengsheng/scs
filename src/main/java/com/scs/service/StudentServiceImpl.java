@@ -19,36 +19,36 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public void addStudentSelective(Student Student) {
-
+        dao.insert(Student);
     }
 
     @Override
     public List<Student> findAllStudents() {
-        return null;
+        return dao.selectAllStudents();
     }
 
     @Override
     public Long countStudents() {
-        return null;
+        return dao.countStudent();
     }
 
     @Override
     public void removeById(int id) {
-
+        dao.deleteById(id);
     }
 
     @Override
-    public List<Student> selectByExample(Student Student) {
-        return null;
+    public List<Student> selectByExample(Student student) {
+        return dao.selectByExample(student);
     }
 
     @Override
     public void modifyStudent(Student Student) {
-
+        dao.updateByExampleSelective(Student);
     }
 
     @Override
     public Student findStudentById(int id) {
-        return null;
+        return dao.selectById(id);
     }
 }

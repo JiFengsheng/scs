@@ -13,15 +13,17 @@ public interface StudentMapper {
     void insertSelective(Student record);
 
 
-    long countByExample();
+    long countStudent();
 
-    int deleteByExample();
+    void deleteById(int id);
 
+    List<Student> selectAllStudents();
 
+    List<Student> selectByExample(Student student);
 
-    List<Student> selectByExample();
+    Student selectById(int id);
 
-    int updateByExampleSelective();
+    int updateByExampleSelective(Student student);
 
 
 }
