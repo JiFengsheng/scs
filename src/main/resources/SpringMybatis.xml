@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--<context:property-placeholder location="classpath:jdbc.mysql.properties"/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl"
+                  value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>-->
+    <context:property-placeholder location="classpath:datasource.properties"/>
+    <!--注册数据源:spring内置的连接池-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/scs?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"/>
+        <property name="username" value="root"/>
+        <property name="password" value="88878552"/>
+    </bean>
+
+    <bean id="mySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--主配置文件-->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--
+        生成DAO的代理对象
+        当前配置会为指定的基本包中所有的接口生成代理对象
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="mySqlSessionFactory"/>
+        <property name="basePackage" value="com.scs.dao"/>
+    </bean>
+
+    <!--注册service-->
+    <bean id="userService" class="com.scs.service.UserServiceImpl">
+        <!--<property name="dao" ref="StudentDao"/>-->
+        <!--这里的dao的注入需要使用ref属性，
+        若DAO的接口名的前两个字母是大写，则其值为接口的简单类名
+        若DAO的接口名的首字母是大写，第二个字母为小写，则这里的值为简单类名，但首字母要小写-->
+        <property name="dao" ref="userMapper"/>
+    </bean>
+
+    <bean id="studentService" class="com.scs.service.StudentServiceImpl">
+        <property name="dao" ref="studentMapper"/>
+    </bean>
+
+
+
+</beans>

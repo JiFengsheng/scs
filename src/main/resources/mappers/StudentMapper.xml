@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scs.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.scs.pojo.Student">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="student_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sex" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="birth" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="Admission_Date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="native_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="home" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="email_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="academy" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="class_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pic" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="disabled" javaType="java.lang.Boolean" jdbcType="BIT" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMap" type="com.scs.pojo.Student">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="student_id" property="studentId"/>
+    <result column="name" property="name"/>
+    <result column="sex" property="sex"/>
+    <result column="birth" property="birth"/>
+    <result column="Admission_Date" property="admissionDate"/>
+    <result column="native_place" property="nativePlace"/>
+    <result column="home" property="home"/>
+    <result column="email_code" property="emailCode"/>
+    <result column="academy" property="academy"/>
+    <result column="class_id" property="classId"/>
+    <result column="pic" property="pic"/>
+    <result column="create_time" property="creatTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="disabled" property="disabled"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.scs.pojo.Student">
+    insert into student (id, user_id, student_id,
+    name, sex, birth,
+    Admission_Date, native_place, home,
+    email_code, academy, class_id,
+    pic, create_time, update_time,
+    disabled)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER},
+    #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birth,jdbcType=TIMESTAMP},
+    #{admissionDate,jdbcType=TIMESTAMP}, #{nativePlace,jdbcType=VARCHAR}, #{home,jdbcType=VARCHAR},
+    #{emailCode,jdbcType=VARCHAR}, #{academy,jdbcType=VARCHAR}, #{classId,jdbcType=INTEGER},
+    #{pic,jdbcType=VARCHAR}, now(), now(),
+    #{disabled,jdbcType=BIT})
+    <!--select传过来的数据立马传给id -->
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      select @@identity
+    </selectKey>
+
+  </insert>
+
+
+  <insert id="insertSelective" parameterType="com.scs.pojo.Student">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="admissionDate != null">
+        Admission_Date,
+      </if>
+      <if test="nativePlace != null">
+        native_place,
+      </if>
+      <if test="home != null">
+        home,
+      </if>
+      <if test="emailCode != null">
+        email_code,
+      </if>
+      <if test="academy != null">
+        academy,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
+
+      <if test="disabled != null">
+        disabled,
+      </if>
+
+      create_time,update_time,
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="admissionDate != null">
+        #{admissionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nativePlace != null">
+        #{nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="home != null">
+        #{home,jdbcType=VARCHAR},
+      </if>
+      <if test="emailCode != null">
+        #{emailCode,jdbcType=VARCHAR},
+      </if>
+      <if test="academy != null">
+        #{academy,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null">
+        #{disabled,jdbcType=BIT},
+      </if>
+
+        now(),now(),
+
+    </trim>
+  </insert>
+
+
+
+
+
+
+  <delete id="deleteByExample">
+    delete from student
+
+  </delete>
+
+  <sql id="Base_Column_List">
+    id, user_id, student_id, name, sex, birth, Admission_Date, native_place, home, email_code, 
+    academy, class_id, pic, create_time, update_time, disabled
+  </sql>
+  <select id="selectByExample" parameterType="com.scs.pojo.Student" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student
+
+  </select>
+
+
+
+  <select id="countByExample" parameterType="com.scs.pojo.Student" resultType="java.lang.Long">
+    select count(*) from student
+
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update student
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentId != null">
+        student_id = #{record.studentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birth != null">
+        birth = #{record.birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.admissionDate != null">
+        Admission_Date = #{record.admissionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nativePlace != null">
+        native_place = #{record.nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.home != null">
+        home = #{record.home,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emailCode != null">
+        email_code = #{record.emailCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.academy != null">
+        academy = #{record.academy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classId != null">
+        class_id = #{record.classId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pic != null">
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.disabled != null">
+        disabled = #{record.disabled,jdbcType=BIT},
+      </if>
+    </set>
+
+
+  </update>
+
+</mapper>
