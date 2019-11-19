@@ -150,7 +150,6 @@
       </if>
       <if test="disabled != null">
         disabled = #{disabled,jdbcType=BIT} and
-
       </if>
 
     </trim>

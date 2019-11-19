@@ -11,7 +11,7 @@ public interface IStudentService {
     List<Student> findAllStudents();
     Long countStudents();
     void removeById(int id);
-    List<Student> selectByExample(Student Student);
+    List<Student> selectByExample(Student student);
     void modifyStudent(Student Student);
     Student findStudentById(int id);
     

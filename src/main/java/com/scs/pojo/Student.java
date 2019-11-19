@@ -34,7 +34,7 @@ public class Student {
     private String academy;
     private Integer classId;
     private String pic;
-    private Date creatTime;
+    private Date createTime;
     private Date updateTime;
     private Boolean disabled;
 
@@ -163,12 +163,12 @@ public class Student {
         this.pic = pic;
     }
 
-    public Date getCreatTime() {
-        return creatTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {
@@ -203,7 +203,7 @@ public class Student {
                 ", academy='" + academy + '\'' +
                 ", classId=" + classId +
                 ", pic='" + pic + '\'' +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", disabled=" + disabled +
                 '}';
