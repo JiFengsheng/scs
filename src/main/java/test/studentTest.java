@@ -8,7 +8,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class studentTest {
 
@@ -22,7 +24,7 @@ public class studentTest {
     /*添加学生*/
     @Test
     public void test01(){
-        Student student=new Student(4, 123, "王五", "男", new Date(), new Date(), "广东省某市", "广东某市xxx县", "515044", "数学与计算机学院", 1, "a.png", false);
+        Student student=new Student(5, 12345, "ccc", "女", new Date(), new Date(), "广东省某市", "广东某市xxx县", "515044", "数学与计算机学院", 1, "a.png", false);
         service.addStudent(student);
         System.out.println(student);
     }
@@ -89,6 +91,17 @@ public class studentTest {
         service.modifyStudent(student);
         System.out.println(service.findStudentById(2));
 
+    }
+
+    @Test
+    public void test09(){
+        Map map=new HashMap();
+        map.put("start",0);
+        map.put("num",3);
+        List<Student> Students=service.selectByLimit(map);
+        for(Student student:Students){
+            System.out.println(student);
+        }
     }
 
 

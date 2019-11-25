@@ -1,0 +1,39 @@
+
+ 系统管理:
+    监测数据查询：查询某个设备的信息
+    学生管理：增删学生
+    资产管理:更改设备信息、查询设备信息
+
+日志管理:
+    灯光控制记录
+    空调控制记录
+    学生考勤记录
+    资产进出记录
+权限管理：
+    用户管理
+    角色管理
+
+
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Java
+            <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="#">jmeter</a></li>
+            <li><a href="#">EJB</a></li>
+            <li><a href="#">Jasper Report</a></li>
+            <li class="divider"></li>
+            <li><a href="#">分离的链接</a></li>
+            <li class="divider"></li>
+            <li><a href="#">另一个分离的链接</a></li>
+        </ul>
+    </li>
+
+
+
+    <Context path ="/upload" docBase ="E:/upload" debug ="0" privileged ="true">
+            </Context>
+
+    234a114e-6912-4387-9262-0aaec6c9a3ef.jpg

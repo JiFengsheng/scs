@@ -11,5 +11,23 @@
     <mappers>
         <mapper resource="mappers/UserMapper.xml"/>
         <mapper resource="mappers/StudentMapper.xml"/>
+        <mapper resource="mappers/TeacherMapper.xml"/>
+        <mapper resource="mappers/ClassSCSMapper.xml"/>
+        <mapper resource="mappers/AddrMapper.xml"/>
+        <mapper resource="mappers/AirconditionMapper.xml"/>
+        <!--<mapper resource="mappers/AudioMapper.xml"/>-->
+        <mapper resource="mappers/ControlMapper.xml"/>
+        <mapper resource="mappers/CourseXMapper.xml"/>
+        <mapper resource="mappers/CourseYMapper.xml"/>
+        <mapper resource="mappers/CourseZMapper.xml"/>
+        <!--<mapper resource="mappers/CurtainMapper.xml"/>-->
+        <mapper resource="mappers/EquipmentMapper.xml"/>
+        <mapper resource="mappers/GradeMapper.xml"/>
+        <mapper resource="mappers/LightMapper.xml"/>
+        <!--<mapper resource="mappers/LightSensorMapper.xml"/>-->
+        <!--<mapper resource="mappers/PmSensorMapper.xml"/>-->
+        <mapper resource="mappers/SignMapper.xml"/>
+        <!--<mapper resource="mappers/SmokeSensorMapper.xml"/>-->
+        <mapper resource="mappers/THSensorMapper.xml"/>
     </mappers>
 </configuration>

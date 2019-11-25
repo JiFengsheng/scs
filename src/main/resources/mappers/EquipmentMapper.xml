@@ -10,93 +10,53 @@
       <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+  <resultMap id="ResultMap" type="com.scs.pojo.Equipment">
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="input_time" property="inputTime"/>
+    <result column="lei" property="lei"/>
+    <result column="state" property="state"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, name, input_time, lei, state
   </sql>
-  <select id="selectByExample" parameterType="com.scs.pojo.EquipmentExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.scs.pojo.Equipment"
+          resultMap="ResultMap">
     select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from equipment
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
+    <trim prefix="where" suffixOverrides="and">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER}and
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR}and
+      </if>
+      <if test="inputTime != null">
+        input_time = #{inputTime,jdbcType=TIMESTAMP}and
+      </if>
+      <if test="lei != null">
+        lei = #{lei,jdbcType=VARCHAR}and
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR}and
+      </if>
+    </trim>
+
   </select>
-  <delete id="deleteByExample" parameterType="com.scs.pojo.EquipmentExample">
-    delete from equipment
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+  <delete id="deleteByExample" parameterType="com.scs.pojo.Equipment">
+    delete from equipment WHERE id=#{id}
   </delete>
   <insert id="insert" parameterType="com.scs.pojo.Equipment">
     insert into equipment (id, name, input_time, 
       lei, state)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{inputTime,jdbcType=TIMESTAMP}, 
       #{lei,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR})
+    <!--select传过来的数据立马传给id -->
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      select @@identity
+    </selectKey>
   </insert>
   <insert id="insertSelective" parameterType="com.scs.pojo.Equipment">
     insert into equipment
@@ -135,44 +95,43 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.scs.pojo.EquipmentExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.scs.pojo.Equipment" resultType="java.lang.Long">
     select count(*) from equipment
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="com.scs.pojo.Equipment">
     update equipment
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.inputTime != null">
-        input_time = #{record.inputTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.lei != null">
-        lei = #{record.lei,jdbcType=VARCHAR},
-      </if>
-      <if test="record.state != null">
-        state = #{record.state,jdbcType=VARCHAR},
-      </if>
+      <trim suffixOverrides=",">
+        <if test="id != null">
+          id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="name != null">
+          name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="inputTime != null">
+          input_time = #{inputTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="lei != null">
+          lei = #{lei,jdbcType=VARCHAR},
+        </if>
+        <if test="state != null">
+          state = #{state,jdbcType=VARCHAR},
+        </if>
+      </trim>
+
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
+    where id=#{id}
   </update>
-  <update id="updateByExample" parameterType="map">
-    update equipment
-    set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      input_time = #{record.inputTime,jdbcType=TIMESTAMP},
-      lei = #{record.lei,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+
+  <select id="selectById" resultMap="ResultMap">
+    SELECT * FROM equipment WHERE id=#{id}
+  </select>
+
+  <select id="selectAllEquipments" resultMap="ResultMap">
+    SELECT * FROM equipment
+  </select>
+
+
+
+  
 </mapper>

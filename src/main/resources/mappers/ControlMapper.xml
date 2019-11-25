@@ -6,97 +6,56 @@
       <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="order" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="orderc" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="equipment_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+  <resultMap id="ResultMap" type="com.scs.pojo.Control">
+    <id column="id" property="id"/>
+    <result column="time" property="time"/>
+    <result column="user_id" property="userId"/>
+    <result column="orderc" property="order"/>
+    <result column="equipment_id" property="equipmentId"/>
+  </resultMap>
+  
+  
   <sql id="Base_Column_List">
-    id, time, user_id, order, equipment_id
+    id, time, user_id, orderc, equipment_id
   </sql>
-  <select id="selectByExample" parameterType="com.scs.pojo.ControlExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.scs.pojo.Control" resultMap="ResultMap">
     select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from control
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
+    <trim prefix="where" suffixOverrides="and">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER}and
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP}and
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER}and
+      </if>
+      <if test="order != null">
+        orderc = #{order,jdbcType=VARCHAR}and
+      </if>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER}and
+      </if>
+    </trim>
   </select>
-  <delete id="deleteByExample" parameterType="com.scs.pojo.ControlExample">
-    delete from control
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+  <delete id="deleteByExample" >
+    delete from control WHERE id=#{id}
   </delete>
   <insert id="insert" parameterType="com.scs.pojo.Control">
     insert into control (id, time, user_id, 
-      order, equipment_id)
+      orderc, equipment_id)
     values (#{id,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, 
       #{order,jdbcType=VARCHAR}, #{equipmentId,jdbcType=INTEGER})
+    <!--select传过来的数据立马传给id -->
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      select @@identity
+    </selectKey>
   </insert>
   <insert id="insertSelective" parameterType="com.scs.pojo.Control">
     insert into control
@@ -111,7 +70,7 @@
         user_id,
       </if>
       <if test="order != null">
-        order,
+        orderc,
       </if>
       <if test="equipmentId != null">
         equipment_id,
@@ -135,44 +94,41 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.scs.pojo.ControlExample" resultType="java.lang.Long">
-    select count(*) from control
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+  <select id="countByExample" resultType="java.lang.Long">
+    select count(*) from control 
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="com.scs.pojo.Control">
     update control
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.time != null">
-        time = #{record.time,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.order != null">
-        order = #{record.order,jdbcType=VARCHAR},
-      </if>
-      <if test="record.equipmentId != null">
-        equipment_id = #{record.equipmentId,jdbcType=INTEGER},
-      </if>
+      
+      <trim suffixOverrides=",">
+        <if test="id != null">
+          id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="time != null">
+          time = #{time,jdbcType=TIMESTAMP},
+        </if>
+        <if test="userId != null">
+          user_id = #{userId,jdbcType=INTEGER},
+        </if>
+        <if test="order != null">
+          orderc = #{order,jdbcType=VARCHAR},
+        </if>
+        <if test="equipmentId != null">
+          equipment_id = #{equipmentId,jdbcType=INTEGER},
+        </if>
+        
+      </trim>
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
+    where id=#{id}
   </update>
-  <update id="updateByExample" parameterType="map">
-    update control
-    set id = #{record.id,jdbcType=INTEGER},
-      time = #{record.time,jdbcType=TIMESTAMP},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      order = #{record.order,jdbcType=VARCHAR},
-      equipment_id = #{record.equipmentId,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+  
+  <select id="selectById" resultMap="ResultMap">
+    SELECT * FROM control WHERE id=#{id}
+  </select>
+  <select id="selectAllControls" resultMap="ResultMap">
+    SELECT * FROM control
+  </select>
+  
+  
 </mapper>

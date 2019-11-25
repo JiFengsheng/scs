@@ -12,87 +12,52 @@
       <arg column="leave_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+  <resultMap id="ResultMap" type="com.scs.pojo.Sign">
+    <id column="id" property="id"/>
+    <result column="date" property="date"/>
+    <result column="coursey_id" property="courseyId"/>
+    <result column="student_id" property="studentId"/>
+    <result column="sign_time" property="signTime"/>
+    <result column="class_id" property="classId"/>
+    <result column="leave_time" property="leaveTime"/>
+  </resultMap>
+  
   <sql id="Base_Column_List">
     id, date, coursey_id, student_id, sign_time, class_id, leave_time
   </sql>
-  <select id="selectByExample" parameterType="com.scs.pojo.SignExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.scs.pojo.Sign" resultMap="ResultMap">
     select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from sign
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
+    <trim prefix="where" suffixOverrides="and">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER}and
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE}and
+      </if>
+      <if test="courseyId != null">
+        coursey_id = #{courseyId,jdbcType=INTEGER}and
+      </if>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=INTEGER}and
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP}and
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER}and
+      </if>
+      <if test="leaveTime != null">
+        leave_time = #{leaveTime,jdbcType=TIMESTAMP}and
+      </if>
+      
+    </trim>
+    
+    
   </select>
-  <delete id="deleteByExample" parameterType="com.scs.pojo.SignExample">
-    delete from sign
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+  <delete id="deleteByExample" parameterType="com.scs.pojo.Sign">
+    delete from sign WHERE id=#{id}
   </delete>
   <insert id="insert" parameterType="com.scs.pojo.Sign">
     insert into sign (id, date, coursey_id, 
@@ -101,6 +66,10 @@
     values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{courseyId,jdbcType=INTEGER}, 
       #{studentId,jdbcType=INTEGER}, #{signTime,jdbcType=TIMESTAMP}, #{classId,jdbcType=INTEGER}, 
       #{leaveTime,jdbcType=TIMESTAMP})
+    <!--select传过来的数据立马传给id -->
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      select @@identity
+    </selectKey>
   </insert>
   <insert id="insertSelective" parameterType="com.scs.pojo.Sign">
     insert into sign
@@ -151,52 +120,47 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.scs.pojo.SignExample" resultType="java.lang.Long">
+  <select id="countByExample"  resultType="java.lang.Long">
     select count(*) from sign
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="com.scs.pojo.Sign">
     update sign
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.date != null">
-        date = #{record.date,jdbcType=DATE},
-      </if>
-      <if test="record.courseyId != null">
-        coursey_id = #{record.courseyId,jdbcType=INTEGER},
-      </if>
-      <if test="record.studentId != null">
-        student_id = #{record.studentId,jdbcType=INTEGER},
-      </if>
-      <if test="record.signTime != null">
-        sign_time = #{record.signTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.classId != null">
-        class_id = #{record.classId,jdbcType=INTEGER},
-      </if>
-      <if test="record.leaveTime != null">
-        leave_time = #{record.leaveTime,jdbcType=TIMESTAMP},
-      </if>
+      <trim suffixOverrides=",">
+        <if test="id != null">
+          id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="date != null">
+          date = #{date,jdbcType=DATE},
+        </if>
+        <if test="courseyId != null">
+          coursey_id = #{courseyId,jdbcType=INTEGER},
+        </if>
+        <if test="studentId != null">
+          student_id = #{studentId,jdbcType=INTEGER},
+        </if>
+        <if test="signTime != null">
+          sign_time = #{signTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="classId != null">
+          class_id = #{classId,jdbcType=INTEGER},
+        </if>
+        <if test="leaveTime != null">
+          leave_time = #{leaveTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
+
+    where id=#{id}
   </update>
-  <update id="updateByExample" parameterType="map">
-    update sign
-    set id = #{record.id,jdbcType=INTEGER},
-      date = #{record.date,jdbcType=DATE},
-      coursey_id = #{record.courseyId,jdbcType=INTEGER},
-      student_id = #{record.studentId,jdbcType=INTEGER},
-      sign_time = #{record.signTime,jdbcType=TIMESTAMP},
-      class_id = #{record.classId,jdbcType=INTEGER},
-      leave_time = #{record.leaveTime,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+
+  <select id="selectById" resultMap="ResultMap">
+    SELECT * FROM sign WHERE id=#{sign}
+  </select>
+
+  <select id="selectAllSigns" resultMap="ResultMap">
+    SELECT * FROM sign
+  </select>
+  
 </mapper>

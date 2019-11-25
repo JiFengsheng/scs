@@ -95,7 +95,7 @@
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">
         </table>
-        <table tableName="coursey" domainObjectName="CourseY"
+        <table tableName="coursey" domainObjectName="com.scs.pojo.CourseY"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">

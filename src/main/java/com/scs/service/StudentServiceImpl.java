@@ -2,8 +2,8 @@ package com.scs.service;
 
 import com.scs.dao.StudentMapper;
 import com.scs.pojo.Student;
-
 import java.util.List;
+import java.util.Map;
 
 public class StudentServiceImpl implements IStudentService {
 
@@ -51,4 +51,11 @@ public class StudentServiceImpl implements IStudentService {
     public Student findStudentById(int id) {
         return dao.selectById(id);
     }
+
+    @Override
+    public List<Student> selectByLimit(Map map) {
+        return dao.selectByLimit(map);
+    }
+
+
 }

@@ -10,93 +10,53 @@
       <arg column="equipment_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+  <resultMap id="ResultMap" type="com.scs.pojo.Light">
+    <id column="id" property="id"/>
+    <result column="bright" property="bright"/>
+    <result column="on_off" property="onOff"/>
+    <result column="time" property="time"/>
+    <result column="equipment_id" property="equipmentId"/>
+  </resultMap>
   <sql id="Base_Column_List">
     id, bright, on_off, time, equipment_id
   </sql>
-  <select id="selectByExample" parameterType="com.scs.pojo.LightExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.scs.pojo.Light" resultMap="ResultMap">
     select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from light
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
+    <trim prefix="where" suffixOverrides="and">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bright != null">
+        bright = #{bright,jdbcType=REAL},
+      </if>
+      <if test="onOff != null">
+        on_off = #{onOff,jdbcType=BIT},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER},
+      </if>
+    </trim>
   </select>
-  <delete id="deleteByExample" parameterType="com.scs.pojo.LightExample">
-    delete from light
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
+  <delete id="deleteByExample" >
+    delete from light WHERE id=#{id}
+
   </delete>
   <insert id="insert" parameterType="com.scs.pojo.Light">
     insert into light (id, bright, on_off, time, 
       equipment_id)
     values (#{id,jdbcType=INTEGER}, #{bright,jdbcType=REAL}, #{onOff,jdbcType=BIT}, #{time,jdbcType=TIMESTAMP}, 
       #{equipmentId,jdbcType=INTEGER})
+    <!--select传过来的数据立马传给id -->
+    <selectKey resultType="int" keyProperty="id" order="AFTER">
+      select @@identity
+    </selectKey>
+
+
   </insert>
   <insert id="insertSelective" parameterType="com.scs.pojo.Light">
     insert into light
@@ -135,44 +95,43 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.scs.pojo.LightExample" resultType="java.lang.Long">
+  <select id="countByExample"  resultType="java.lang.Long">
     select count(*) from light
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update light
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.bright != null">
-        bright = #{record.bright,jdbcType=REAL},
-      </if>
-      <if test="record.onOff != null">
-        on_off = #{record.onOff,jdbcType=BIT},
-      </if>
-      <if test="record.time != null">
-        time = #{record.time,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.equipmentId != null">
-        equipment_id = #{record.equipmentId,jdbcType=INTEGER},
-      </if>
+      <trim suffixOverrides=",">
+        <if test="id != null">
+          id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="bright != null">
+          bright = #{bright,jdbcType=REAL},
+        </if>
+        <if test="onOff != null">
+          on_off = #{onOff,jdbcType=BIT},
+        </if>
+        <if test="time != null">
+          time = #{time,jdbcType=TIMESTAMP},
+        </if>
+        <if test="equipmentId != null">
+          equipment_id = #{equipmentId,jdbcType=INTEGER},
+        </if>
+      </trim>
+
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
+    
+    where id=#{id}
   </update>
-  <update id="updateByExample" parameterType="map">
-    update light
-    set id = #{record.id,jdbcType=INTEGER},
-      bright = #{record.bright,jdbcType=REAL},
-      on_off = #{record.onOff,jdbcType=BIT},
-      time = #{record.time,jdbcType=TIMESTAMP},
-      equipment_id = #{record.equipmentId,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+
+  <select id="selectAllLights" resultMap="ResultMap">
+    SELECT * FROM light
+  </select>
+
+  <select id="selectById" resultMap="ResultMap">
+    SELECT * FROM light WHERE id=#{id}
+  </select>
+  
+  
+  
 </mapper>

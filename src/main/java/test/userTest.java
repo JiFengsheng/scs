@@ -10,7 +10,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class userTest {
 
@@ -81,8 +83,13 @@ public class userTest {
         user.setName("aa");
 //        user.setPassword("111");
 //        user.setRfid("222");
-        user.setRole(1);
+        user.setRole(0);
         List<User> users = service.selectByExample(user);
+        System.out.println(users);
+
+        if (users.size()==0){
+            System.out.println("test");
+        }
         for (User user1:users){
             System.out.println(user1);
         }
@@ -102,6 +109,20 @@ public class userTest {
     public void test08(){
         User user = service.findUserById(3);
         System.out.println(user);
+    }
+
+    /*分页*/
+    @Test
+    public void test09(){
+        Map map=new HashMap();
+        map.put("start",0);
+        map.put("num",3);
+        List<User> users=service.selectByLimit(map);
+        for (User user:users){
+            System.out.println(user);
+        }
+
+
     }
 
 

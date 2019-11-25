@@ -3,6 +3,7 @@ package com.scs.service;
 import com.scs.pojo.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IUserService {
 
@@ -14,6 +15,7 @@ public interface IUserService {
     List<User> selectByExample(User user);
     void modifyUser(User User);
     User findUserById(int id);
+    List<User> selectByLimit(Map map);
 
 
 

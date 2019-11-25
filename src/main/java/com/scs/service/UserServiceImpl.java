@@ -4,6 +4,7 @@ import com.scs.dao.UserMapper;
 import com.scs.pojo.User;
 
 import java.util.List;
+import java.util.Map;
 
 public class UserServiceImpl implements IUserService {
 
@@ -52,7 +53,10 @@ public class UserServiceImpl implements IUserService {
         return dao.selectById(id);
     }
 
-
+    @Override
+    public List<User> selectByLimit(Map map) {
+        return dao.selectByLimit(map);
+    }
 
 
     @Override

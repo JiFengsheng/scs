@@ -3,6 +3,8 @@ package com.scs.dao;
 import com.scs.pojo.Student;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface StudentMapper {
@@ -25,5 +27,6 @@ public interface StudentMapper {
 
     int updateByExampleSelective(Student student);
 
+    List<Student> selectByLimit(Map map);
 
 }

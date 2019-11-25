@@ -302,4 +302,10 @@
 
   </update>
 
+  <select id="selectByLimit" parameterType="map" resultMap="ResultMap">
+    SELECT * FROM user LIMIT #{start},#{num}
+  </select>
+
+
+
 </mapper>

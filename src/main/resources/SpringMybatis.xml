@@ -53,6 +53,56 @@
     <bean id="studentService" class="com.scs.service.StudentServiceImpl">
         <property name="dao" ref="studentMapper"/>
     </bean>
+    <bean id="teacherService" class="com.scs.service.TeacherServiceImpl">
+        <property name="dao" ref="teacherMapper"/>
+    </bean>
+    <bean id="classSCSService" class="com.scs.service.ClassSCSServiceImpl">
+        <property name="dao" ref="classSCSMapper"/>
+    </bean>
+
+    <bean id="courseXService" class="com.scs.service.CourseXServiceImpl">
+        <property name="dao" ref="courseXMapper"/>
+    </bean>
+
+    <bean id="courseYService" class="com.scs.service.CourseYServiceImpl">
+        <property name="dao" ref="courseYMapper"/>
+    </bean>
+
+    <bean id="courseZService" class="com.scs.service.CourseZServiceImpl">
+        <property name="dao" ref="courseZMapper"/>
+    </bean>
+
+    <bean id="gradeService" class="com.scs.service.GradeServiceImpl">
+        <property name="dao" ref="gradeMapper"/>
+    </bean>
+
+    <bean id="signService" class="com.scs.service.SignServiceImpl">
+        <property name="dao" ref="signMapper"/>
+    </bean>
+
+    <bean id="equipmentService" class="com.scs.service.EquipmentServiceImpl">
+        <property name="dao" ref="equipmentMapper"/>
+    </bean>
+
+    <bean id="controlService" class="com.scs.service.ControlServiceImpl">
+        <property name="dao" ref="controlMapper"/>
+    </bean>
+
+    <bean id="addrService" class="com.scs.service.AddrServiceImpl">
+        <property name="dao" ref="addrMapper"/>
+    </bean>
+
+    <bean id="aircondition" class="com.scs.service.AirconditionServiceImpl">
+        <property name="dao" ref="airconditionMapper"/>
+    </bean>
+
+    <bean id="thSensorService"  class="com.scs.service.THSensorServiceImpl">
+        <property name="dao" ref="THSensorMapper"/>
+    </bean>
+
+    <bean id="lightService" class="com.scs.service.LightServiceImpl">
+        <property name="dao" ref="lightMapper"/>
+    </bean>
 
 
 

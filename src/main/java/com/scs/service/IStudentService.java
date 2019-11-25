@@ -3,6 +3,7 @@ package com.scs.service;
 import com.scs.pojo.Student;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IStudentService {
 
@@ -14,6 +15,7 @@ public interface IStudentService {
     List<Student> selectByExample(Student student);
     void modifyStudent(Student Student);
     Student findStudentById(int id);
+    List<Student> selectByLimit(Map map);
     
     
 }
